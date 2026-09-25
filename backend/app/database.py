@@ -1,5 +1,4 @@
 import os
-
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
@@ -18,7 +17,7 @@ MYSQL_DATABASE = os.getenv(
 if not MYSQL_PASSWORD:
     raise RuntimeError(
         "MYSQL_PASSWORD is missing. "
-        "Please create backend/.env and add your MySQL password."
+        "Please configure the backend environment variables."
     )
 
 DATABASE_URL = (
@@ -28,8 +27,7 @@ DATABASE_URL = (
 
 engine = create_engine(
     DATABASE_URL,
-    pool_pre_ping=True,
-    pool_recycle=280
+    pool_pre_ping=True
 )
 
 SessionLocal = sessionmaker(
@@ -46,6 +44,5 @@ def get_db():
 
     try:
         yield db
-
     finally:
         db.close()
